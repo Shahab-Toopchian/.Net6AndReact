@@ -1,36 +1,29 @@
 import { observer } from 'mobx-react-lite';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Grid } from 'semantic-ui-react';
+import LoadingComponent from '../../../app/layout/LoadingComponent';
 import { useStore } from '../../../app/stores/store';
-import ActivityDetails from '../Details/ActivityDetails';
-import ActivityForm from '../Form/ActivityForm';
+import ActivityFilters from './ActivityFilters';
 import ActivityList from './ActivityList';
 
-// interface  Props{
-//  activities : Activity[];
-//   selectedActivity : Activity | undefined;
-//   selectActivity : (id : String) => void;
-//   cancelSelectedActivity : () => void;
-//   openForm : (id : String) => void;
-//   closeForm : () => void;
-//  editMode : boolean; 
-//  submitting : boolean; 
-//  deleteActivity : (id : String) => void;
-// } 
 
 export default observer(function ActivityDashboard() {
     const {activityStore} =useStore();
-    const {selectedActivity,editMode} =activityStore;
+    const {loadActivities,activityRegistery} = activityStore;
+
+    useEffect(() => {
+       if(activityRegistery.size <= 1)  loadActivities();
+      }, [activityRegistery.size , loadActivities])
+
+    if(activityStore.loadingInitial) return <LoadingComponent content='Loading app'/>
+
     return (
         <Grid>
             <Grid.Column width='10'>
                 <ActivityList/>
             </Grid.Column>
             <Grid.Column width='6'>
-                {selectedActivity && !editMode &&
-                <ActivityDetails/>} 
-                {editMode &&
-                <ActivityForm />}
+                <ActivityFilters/>
             </Grid.Column>
         </Grid>
 
