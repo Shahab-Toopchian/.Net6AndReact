@@ -1,5 +1,6 @@
 using Application.Activities;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -8,13 +9,6 @@ namespace API.Controllers
 {
     public class ActivitiesController : BaseApiController
     {
-        // private readonly IMediator _mediator;
-
-        // public ActivitiesController(IMediator mediator)
-        // {
-        //     _mediator = mediator;
-        // }
-
         [HttpGet]
         public async Task<IActionResult> GetActivities()
         {
